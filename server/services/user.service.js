@@ -21,10 +21,10 @@ module.exports.createUser = async ({
 module.exports.checkUser = async (email) => {
     console.log(email);
 
-    const user = userModel.findOne({ email: email })
+    const user = await userModel.findOne({ email }).select('+password')
 
     if (user)
-        return true
+        return user
     else
         false
 
