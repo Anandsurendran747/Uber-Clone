@@ -19,7 +19,6 @@ module.exports.createUser = async ({
 }
 
 module.exports.checkUser = async (email) => {
-    console.log(email);
 
     const user = await userModel.findOne({ email }).select('+password')
 

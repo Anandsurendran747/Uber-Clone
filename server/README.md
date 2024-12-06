@@ -86,4 +86,77 @@ Logs in an existing user by validating input data, checking for user existence, 
 {
   "error": "Invalid email or password"
 }
+```
+
+### GET /users/profile
+
+**Description:** Retrieve the profile of the authenticated user.
+
+**Headers:**
+
+- `Authorization`: `Bearer <token>` (optional if token is provided via cookie)
+
+**Cookies:**
+
+- `token`: JWT token (optional if provided via Authorization header)
+
+**Response:**
+
+- **200 OK**
+
+  Returns the user's profile data.
+
+  ```json
+  {
+    "_id": "user_id",
+    "email": "user@example.com",
+    "firstname": "John",
+    "lastname": "Doe"
+    // ...other user fields...
+  }
+  ```
+
+- **401 Unauthorized**
+
+  If the token is missing or invalid.
+
+  ```json
+  {
+    "message": "Unauthorized"
+  }
+  ```
+
+### GET /users/logout
+
+**Description:** Log out the authenticated user by blacklisting the token and clearing the cookie.
+
+**Headers:**
+
+- `Authorization`: `Bearer <token>` (optional if token is provided via cookie)
+
+**Cookies:**
+
+- `token`: JWT token (optional if provided via Authorization header)
+
+**Response:**
+
+- **200 OK**
+
+  Successfully logged out.
+
+  ```json
+  {
+    "message": "logout"
+  }
+  ```
+
+- **401 Unauthorized**
+
+  If the token is missing or invalid.
+
+  ```json
+  {
+    "message": "Unauthorized"
+  }
+  ```
 
