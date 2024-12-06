@@ -162,7 +162,7 @@ Logs in an existing user by validating input data, checking for user existence, 
 
 ### POST /captain/register
 
-**Description:** Register a new captain by validating input data, checking for existing captains, hashing the password, and storing the captain in the database. Returns a JWT token and the created captain data upon successful registration.
+**Description:** Register a new captain by validating input data, including vehicle details, and storing the captain in the database. Returns a JWT token and the created captain data upon successful registration.
 
 **Endpoint:**
 - **URL**: `/captain/register`
@@ -178,7 +178,13 @@ Logs in an existing user by validating input data, checking for user existence, 
     "lastname": "Doe"
   },
   "email": "john.doe@example.com",
-  "password": "password123"
+  "password": "password123",
+  "vehicle": {
+    "color": "Blue",
+    "plate": "ABC123",
+    "capacity": 3,
+    "vehicleType": "auto"
+  }
 }
 ```
 
@@ -193,7 +199,13 @@ Logs in an existing user by validating input data, checking for user existence, 
       "firstname": "John",
       "lastname": "Doe"
     },
-    "email": "john.doe@example.com"
+    "email": "john.doe@example.com",
+    "vehicle": {
+      "color": "Blue",
+      "plate": "ABC123",
+      "capacity": 3,
+      "vehicleType": "auto"
+    }
   }
 }
 ```
