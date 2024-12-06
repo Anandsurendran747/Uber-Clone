@@ -219,3 +219,129 @@ Logs in an existing user by validating input data, checking for user existence, 
 }
 ```
 
+### POST /captain/login
+
+**Description:** Logs in an existing captain by validating input data, checking for captain existence, and verifying the password. Returns a JWT token and the captain data upon successful login.
+
+**Endpoint:**
+- **URL**: `/captain/login`
+- **Method:** `POST`
+- **Headers:**
+  - `Content-Type`: `application/json`
+
+**Request Body:**
+```json
+{
+  "email": "string (required, valid email format)",
+  "password": "string (required)"
+}
+```
+
+**Response Examples:**
+#### Success
+```json
+{
+  "token": "your_jwt_token",
+  "captain": {
+    "id": "captain_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "vehicle": {
+      "color": "Blue",
+      "plate": "ABC123",
+      "capacity": 3,
+      "vehicleType": "auto"
+    }
+  }
+}
+```
+
+#### Error
+```json
+{
+  "error": "Invalid email or password"
+}
+```
+
+### GET /captain/profile
+
+**Description:** Retrieve the profile of the authenticated captain.
+
+**Headers:**
+
+- `Authorization`: `Bearer <token>` (optional if token is provided via cookie)
+
+**Cookies:**
+
+- `token`: JWT token (optional if provided via Authorization header)
+
+**Response:**
+
+- **200 OK**
+
+  Returns the captain's profile data.
+
+  ```json
+  {
+    "_id": "captain_id",
+    "email": "captain@example.com",
+    "fullname":{
+      "firstname":"John",
+      "lastname":"Doe"
+    },
+    "vehicle": {
+      "color": "Blue",
+      "plate": "ABC123",
+      "capacity": 3,
+      "vehicleType": "auto"
+    }
+  }
+  ```
+
+- **401 Unauthorized**
+
+  If the token is missing or invalid.
+
+  ```json
+  {
+    "message": "Unauthorized"
+  }
+  ```
+
+### GET /captain/logout
+
+**Description:** Log out the authenticated captain by blacklisting the token and clearing the cookie.
+
+**Headers:**
+
+- `Authorization`: `Bearer <token>` (optional if token is provided via cookie)
+
+**Cookies:**
+
+- `token`: JWT token (optional if provided via Authorization header)
+
+**Response:**
+
+- **200 OK**
+
+  Successfully logged out.
+
+  ```json
+  {
+    "message": "logout successfully"
+  }
+  ```
+
+- **401 Unauthorized**
+
+  If the token is missing or invalid.
+
+  ```json
+  {
+    "message": "Unauthorized"
+  }
+  ```
+
