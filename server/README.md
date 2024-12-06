@@ -160,3 +160,48 @@ Logs in an existing user by validating input data, checking for user existence, 
   }
   ```
 
+### POST /captain/register
+
+**Description:** Register a new captain by validating input data, checking for existing captains, hashing the password, and storing the captain in the database. Returns a JWT token and the created captain data upon successful registration.
+
+**Endpoint:**
+- **URL**: `/captain/register`
+- **Method:** `POST`
+- **Headers:**
+  - `Content-Type`: `application/json`
+
+**Request Body:**
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+**Response Examples:**
+#### Success
+```json
+{
+  "token": "your_jwt_token",
+  "captain": {
+    "id": "captain_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+}
+```
+
+#### Error
+```json
+{
+  "error": "Captain already exists"
+}
+```
+

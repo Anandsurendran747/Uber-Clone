@@ -12,9 +12,9 @@ module.exports.registerUser = async (req, res, next) => {
 
     const hashedPassword = await userModel.hashPassword(password);
 
-    const isthere = await userService.checkUser(email);
+    const isUserWithEmail = await userService.checkUser(email);
 
-    if (isthere)
+    if (isUserWithEmail)
         res.status(200).json({ warning: "email already registerd" })
     else {
         const user = await userService.createUser({
