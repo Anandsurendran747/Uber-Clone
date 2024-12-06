@@ -15,11 +15,11 @@ Registers a new user by validating input data, checking for existing users, hash
 ```json
 {
   "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
+    "firstname": "string (required)",
+    "lastname": "string (required)"
   },
-  "email": "john.doe@example.com",
-  "password": "password123"
+  "email": "string (required, valid email format)",
+  "password": "string (required, minimum 8 characters)"
 }
 ```
 
@@ -34,7 +34,7 @@ Registers a new user by validating input data, checking for existing users, hash
       "firstname": "John",
       "lastname": "Doe"
     },
-    "email": "john.doe@example.com"
+    "email": "john.doe@example.com",
   }
 }
 ```
@@ -60,8 +60,8 @@ Logs in an existing user by validating input data, checking for user existence, 
 ### Request Body
 ```json
 {
-  "email": "john.doe@example.com",
-  "password": "password123"
+  "email": "string (required, valid email format)",
+  "password": "string (required)"
 }
 ```
 
@@ -76,7 +76,7 @@ Logs in an existing user by validating input data, checking for user existence, 
       "firstname": "John",
       "lastname": "Doe"
     },
-    "email": "john.doe@example.com"
+    "email": "john.doe@example.com",
   }
 }
 ```
@@ -110,9 +110,11 @@ Logs in an existing user by validating input data, checking for user existence, 
   {
     "_id": "user_id",
     "email": "user@example.com",
-    "firstname": "John",
-    "lastname": "Doe"
-    // ...other user fields...
+    "fullname":{
+      "firstname":"john",
+      "lastname":"lesdon"
+    }
+    
   }
   ```
 
@@ -146,7 +148,7 @@ Logs in an existing user by validating input data, checking for user existence, 
 
   ```json
   {
-    "message": "logout"
+    "message": "logout successfully"
   }
   ```
 
@@ -174,16 +176,16 @@ Logs in an existing user by validating input data, checking for user existence, 
 ```json
 {
   "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
+    "firstname": "string (required,min 3 characters)",
+    "lastname": "string"
   },
-  "email": "john.doe@example.com",
-  "password": "password123",
+  "email": "string (required, valid email format)",
+  "password": "string (required, minimum 6 characters)",
   "vehicle": {
-    "color": "Blue",
-    "plate": "ABC123",
-    "capacity": 3,
-    "vehicleType": "auto"
+    "color": "string (required,min 2 characters)",
+    "plate": "string (required,min 2 characters)",
+    "capacity": "number (required,min 1 characters)",
+    "vehicleType": "string (required)"
   }
 }
 ```
