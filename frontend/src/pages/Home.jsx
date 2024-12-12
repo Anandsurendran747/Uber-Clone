@@ -3,6 +3,10 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap';
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel';
+import VehiclePanel from '../components/VehiclePanel';
+import ConfirmRidePanel from '../components/ConfirmRidePanel';
+import LookingForDriver from '../components/LookingForDriver';
+import WaitingForDriver from '../components/WaitingForDriver';
 
 const Home = () => {
     const [pickupPoint, setpickupPoint] = useState('');
@@ -11,8 +15,12 @@ const Home = () => {
     const closeRef = useRef(null);
     const chooseVehicleRef = useRef(null);
     const [expand, setexpand] = useState(false);
-
     const [chooseVehicleOpen, setchooseVehicleOpen] = useState(false);
+    const [confirmRidePanel, setconfirmRidePanel] = useState(false);
+    const confirmRidePanelRef = useRef(null);
+    const [lookingForDriver, setlookingForDriver] = useState(false);
+    const lookingForDriverRef = useRef(null);
+
 
     useGSAP(function () {
         if (expand) {
@@ -42,7 +50,32 @@ const Home = () => {
                 transform: 'translateY(100%)'
             })
         }
-    },[chooseVehicleOpen]);
+    }, [chooseVehicleOpen]);
+
+
+    useGSAP(function () {
+        if (confirmRidePanel) {
+            gsap.to(confirmRidePanelRef.current, {
+                transform: 'translateY(0)'
+            })
+        } else {
+            gsap.to(confirmRidePanelRef.current, {
+                transform: 'translateY(100%)'
+            })
+        }
+    }, [confirmRidePanel]);
+
+    useGSAP(function () {
+        if (lookingForDriver) {
+            gsap.to(lookingForDriverRef.current, {
+                transform: 'translateY(0)'
+            })
+        } else {
+            gsap.to(lookingForDriverRef.current, {
+                transform: 'translateY(100%)'
+            })
+        }
+    }, [lookingForDriver]);
 
     function submitHandler(e) {
         e.preventDefault();
@@ -79,38 +112,20 @@ const Home = () => {
                     </form>
                 </div>
                 <div ref={panelRef} className='h-0 bg-white'>
-                    <LocationSearchPanel setexpand={setexpand}  setchooseVehicleOpen={setchooseVehicleOpen} />
+                    <LocationSearchPanel setexpand={setexpand} setchooseVehicleOpen={setchooseVehicleOpen} />
                 </div>
             </div>
             <div ref={chooseVehicleRef} className='fixed z-10 translate-y-full w-full bottom-0 bg-white p-3 items-center' >
-                <h3 className='text-2xl font-semibold mb-5'>Choose a Vehicle</h3>
-                <div className='flex border-2 active:border-black mb-2 rounded-xl w-full p-2 items-center  justify-between'>
-                    <img className='h-10' src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1548646918/assets/e9/2eeb8f-3764-4e26-8b17-5905a75e7e85/original/2.png" alt="" />
-                    <div>
-                        <h4 className='font-medium text-base'>UberGo<span><i className='ri-user-3-fill'>4</i></span></h4>
-                        <h5 className='font-medium text-sm'>2 mins away</h5>
-                        <p className='font-normal text-xs text-gray-400'>Affordable,comfortable ride</p>
-                    </div>
-                    <h2 className='text-lg font-semibold'>₹196</h2>
-                </div>
-                <div className='flex border-2 active:border-black  mb-2 rounded-xl w-full p-2 items-center justify-between'>
-                    <img className='h-10' src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1649231091/assets/2c/7fa194-c954-49b2-9c6d-a3b8601370f5/original/Uber_Moto_Orange_312x208_pixels_Mobile.png" alt="" />
-                    <div>
-                        <h4 className='font-medium text-base'>Moto <span><i className='ri-user-3-fill'>1</i></span></h4>
-                        <h5 className='font-medium text-sm'>3 mins away</h5>
-                        <p className='font-normal text-xs text-gray-400'>Affordable,motorcycle ride</p>
-                    </div>
-                    <h2 className='text-lg font-semibold'>₹65</h2>
-                </div>
-                <div className='flex border-2 active:border-black  mb-2 rounded-xl w-full p-2 items-center justify-between'>
-                    <img className='h-10' src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1648431773/assets/1d/db8c56-0204-4ce4-81ce-56a11a07fe98/original/Uber_Auto_558x372_pixels_Desktop.png" alt="" />
-                    <div>
-                        <h4 className='font-medium text-base'>Auto <span><i className='ri-user-3-fill'>3</i></span></h4>
-                        <h5 className='font-medium text-sm'>5 mins away</h5>
-                        <p className='font-normal text-xs text-gray-400'>Affordable,Autorikshaw ride</p>
-                    </div>
-                    <h2 className='text-lg font-semibold'>₹118.4</h2>
-                </div>
+                <VehiclePanel setconfirmRidePanel={setconfirmRidePanel} setchooseVehicleOpen={setchooseVehicleOpen} />
+            </div>
+            <div ref={confirmRidePanelRef} className='fixed z-10 translate-y-full w-full bottom-0 bg-white p-3 items-center' >
+                <ConfirmRidePanel setconfirmRidePanel={setconfirmRidePanel} setlookingForDriver={setlookingForDriver} />
+            </div>
+            <div ref={lookingForDriverRef} className='fixed z-10 translate-y-full w-full bottom-0 bg-white p-3 items-center' >
+                <LookingForDriver />
+            </div>
+            <div className='fixed z-10 translate-y-full  w-full bottom-0 bg-white p-3 items-center' >
+                <WaitingForDriver />
             </div>
         </div>
     )
