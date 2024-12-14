@@ -8,7 +8,7 @@ const LookingForDriver = () => {
                 <img className="w-34 h-24 " src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1548646918/assets/e9/2eeb8f-3764-4e26-8b17-5905a75e7e85/original/2.png" alt="Vehicle" />
                 <div className='w-fullflex flex-col'>
                     <div className='p-2 border-b-2'>
-                        <p><strong><i className='ri-map-pin-2-fill'></i></strong> 123 Main St</p>
+                        <p><strong><i className='ri-map-pin-user-fill'></i></strong> 123 Main St</p>
                     </div>
                     <div className='p-2 border-b-2'>
                         <p><strong><i className='ri-map-pin-2-fill'></i></strong> 456 Elm St</p>
