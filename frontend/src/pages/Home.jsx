@@ -7,6 +7,7 @@ import VehiclePanel from '../components/VehiclePanel';
 import ConfirmRidePanel from '../components/ConfirmRidePanel';
 import LookingForDriver from '../components/LookingForDriver';
 import WaitingForDriver from '../components/WaitingForDriver';
+import axios from 'axios';
 
 const Home = () => {
     const [pickupPoint, setpickupPoint] = useState('');
@@ -20,7 +21,9 @@ const Home = () => {
     const confirmRidePanelRef = useRef(null);
     const [lookingForDriver, setlookingForDriver] = useState(false);
     const lookingForDriverRef = useRef(null);
-
+    const [pickupSuggessions, setpickupSuggessions] = useState([]);
+    const [destinationSuggessions, setdestinationSuggessions] = useState([]);
+    const [acitveFeild, setactiveFeild] = useState(null);
 
     useGSAP(function () {
         if (expand) {
@@ -81,6 +84,35 @@ const Home = () => {
         e.preventDefault();
     }
 
+    async function handletPickupChange(e) {
+        setpickupPoint(e.target.value);
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/getSuggessions`, {
+                params: { loc: e.target.value },
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            setpickupSuggessions(response.data);
+        } catch (error) {
+
+        }
+    }
+    async function handletDestinationChange(e) {
+        setdestinationPoint(e.target.value);
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/getSuggessions`, {
+                params: { loc: e.target.value },
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            setdestinationSuggessions(response.data);
+        } catch (error) {
+
+        }
+    }
+
     return (
         <div className='w-screen  h-screen relative overflow-hidden'>
             <img className='absolute w-14 top-5 left-5' src="https://imgs.search.brave.com/FZq7YFqzVbkjhipVXmxfaZY-RmPwy3wsG0WV1UdM8bs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/cy13b3JsZC5uZXQv/d3AtY29udGVudC91/cGxvYWRzLzIwMjAv/MDUvVWJlci1Mb2dv/LTcwMHgzOTQucG5n" alt="" />
@@ -101,18 +133,34 @@ const Home = () => {
                         className='relative' action="">
                         <div className='line absolute h-16 w-1 top-2 left-2 bg-gray-700 rounded-full'></div>
                         <input
-                            onChange={(e) => setpickupPoint(e.target.value)}
-                            onClick={() => { setexpand(true) }}
+                            onClick={() => {
+                                setexpand(true)
+                                setactiveFeild('pickup')
+                            }}
+                            value={pickupPoint}
+                            onChange={handletPickupChange}
+
+
                             placeholder='Pickup Point' className='bg-[#eeeeee] p-2 pl-4 rounded w-full text-sm mb-2' type="text" />
 
                         <input
-                            onChange={(e) => setdestinationPoint(e.target.value)}
-                            onClick={() => { setexpand(true) }}
+                            onChange={(e) => handletDestinationChange(e)}
+                            onClick={() => {
+                                setactiveFeild('desti')
+                                setexpand(true)
+                            }}
+                            value={destinationPoint}
                             placeholder='Destination Point' className='bg-[#eeeeee] p-2 pl-4 rounded w-full text-sm' type="text" />
                     </form>
                 </div>
-                <div ref={panelRef} className='h-0 bg-white'>
-                    <LocationSearchPanel setexpand={setexpand} setchooseVehicleOpen={setchooseVehicleOpen} />
+                <div ref={panelRef} className='h-0 bg-white '>
+                    <LocationSearchPanel
+                        setpickupPoint={setpickupPoint}
+                        setdestinationPoint={setdestinationPoint}
+                        acitveFeild={acitveFeild}
+                        pickupSuggessions={acitveFeild == 'pickup' ? pickupSuggessions : destinationSuggessions}
+                        setexpand={setexpand}
+                        setchooseVehicleOpen={setchooseVehicleOpen} />
                 </div>
             </div>
             <div ref={chooseVehicleRef} className='fixed z-10 translate-y-full w-full bottom-0 bg-white p-3 items-center' >
