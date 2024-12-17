@@ -10,8 +10,8 @@ import WaitingForDriver from '../components/WaitingForDriver';
 import axios from 'axios';
 
 const Home = () => {
-    const [pickupPoint, setpickupPoint] = useState('');
-    const [destinationPoint, setdestinationPoint] = useState('');
+    const [pickupPoint, setpickupPoint] = useState(null);
+    const [destinationPoint, setdestinationPoint] = useState(null);
     const panelRef = useRef(null);
     const closeRef = useRef(null);
     const chooseVehicleRef = useRef(null);
@@ -24,21 +24,17 @@ const Home = () => {
     const [pickupSuggessions, setpickupSuggessions] = useState([]);
     const [destinationSuggessions, setdestinationSuggessions] = useState([]);
     const [acitveFeild, setactiveFeild] = useState(null);
+    const [fare, setfare] = useState({});
+    const [vehicleType, setvehicleType] = useState(null);
 
     useGSAP(function () {
         if (expand) {
             gsap.to(panelRef.current, {
-                height: '70%'
-            })
-            gsap.to(closeRef.current, {
-                opacity: 1
+                height: '60%'
             })
         } else {
             gsap.to(panelRef.current, {
                 height: '0%'
-            })
-            gsap.to(closeRef.current, {
-                opacity: 0
             })
         }
     }, [expand]);
@@ -113,6 +109,36 @@ const Home = () => {
         }
     }
 
+    async function findTrip(e) {
+        e.preventDefault();
+        setchooseVehicleOpen(true);
+        setexpand(false)
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/ride/get-fare`, {
+            params: {
+                source: pickupPoint,
+                destination: destinationPoint
+            },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        setfare(response.data);
+
+    }
+    async function createRide(){
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/ride/create`, {
+            source: pickupPoint,
+            destination: destinationPoint,
+            vehicleType: vehicleType
+        }, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        console.log(response.data);
+        
+    }
+
     return (
         <div className='w-screen  h-screen relative overflow-hidden'>
             <img className='absolute w-14 top-5 left-5' src="https://imgs.search.brave.com/FZq7YFqzVbkjhipVXmxfaZY-RmPwy3wsG0WV1UdM8bs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/cy13b3JsZC5uZXQv/d3AtY29udGVudC91/cGxvYWRzLzIwMjAv/MDUvVWJlci1Mb2dv/LTcwMHgzOTQucG5n" alt="" />
@@ -121,7 +147,7 @@ const Home = () => {
 
             </div>
             <div className='h-screen flex flex-col justify-end  absolute top-0 w-full'>
-                <div className=' p-5 bg-white '>
+                <div className='p-4 bg-white '>
                     <h5 ref={closeRef}
                         onClick={() => setexpand(false)}
                         className='absolute right-5 opacity-0'>
@@ -129,9 +155,8 @@ const Home = () => {
                     </h5>
                     <h4 className='text-2xl font-semibold'>Find a Trip</h4>
                     <form
-                        onSubmit={(e) => submitHandler(e)}
+                        onSubmit={(e) => findTrip(e)}
                         className='relative' action="">
-                        <div className='line absolute h-16 w-1 top-2 left-2 bg-gray-700 rounded-full'></div>
                         <input
                             onClick={() => {
                                 setexpand(true)
@@ -151,7 +176,13 @@ const Home = () => {
                             }}
                             value={destinationPoint}
                             placeholder='Destination Point' className='bg-[#eeeeee] p-2 pl-4 rounded w-full text-sm' type="text" />
+                        <button
+                        type='submit '
+                            className='bg-black text-white p-2 rounded-lg w-full mt-3'>
+                            Find Trip
+                        </button>
                     </form>
+
                 </div>
                 <div ref={panelRef} className='h-0 bg-white '>
                     <LocationSearchPanel
@@ -164,10 +195,23 @@ const Home = () => {
                 </div>
             </div>
             <div ref={chooseVehicleRef} className='fixed z-10 translate-y-full w-full bottom-0 bg-white p-3 items-center' >
-                <VehiclePanel setconfirmRidePanel={setconfirmRidePanel} setchooseVehicleOpen={setchooseVehicleOpen} />
+                <VehiclePanel
+                    setvehicleType={setvehicleType}
+                    fare={fare}
+                    setconfirmRidePanel={setconfirmRidePanel}
+                    setchooseVehicleOpen={setchooseVehicleOpen}
+                     />
             </div>
-            <div ref={confirmRidePanelRef} className='fixed z-10 translate-y-full w-full bottom-0 bg-white p-3 items-center' >
-                <ConfirmRidePanel setconfirmRidePanel={setconfirmRidePanel} setlookingForDriver={setlookingForDriver} />
+            <div ref={confirmRidePanelRef} className='fixed z-10 translate-y-full w-full h-screen bottom-0 bg-white p-3 items-center' >
+                <ConfirmRidePanel
+                    pickup={pickupPoint}
+                    destination={destinationPoint}
+                    fare={fare}
+                    vehicleType={vehicleType}
+                    setconfirmRidePanel={setconfirmRidePanel}
+                    setlookingForDriver={setlookingForDriver}
+                    createMyRide={createRide}
+                    />
             </div>
             <div ref={lookingForDriverRef} className='fixed z-10 translate-y-full w-full bottom-0 bg-white p-3 items-center' >
                 <LookingForDriver />

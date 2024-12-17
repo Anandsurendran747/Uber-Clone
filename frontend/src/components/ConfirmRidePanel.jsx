@@ -1,39 +1,45 @@
 import React from 'react';
 
-const ConfirmRidePanel = (props) => {
+const ConfirmRidePanel = ({vehicleType,createRide, pickup, destination, fare, setlookingForDriver, setconfirmRidePanel }) => {
+    
     return (
-        <div className="p-4 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-3">Confirm Your Ride</h2>
-            <p className="mb-4">Please review the details of your ride before confirming.</p>
-            <div className="w-full flex flex-col justify-between mb-4">
-                <img className="w-34 h-24 " src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1548646918/assets/e9/2eeb8f-3764-4e26-8b17-5905a75e7e85/original/2.png" alt="Vehicle" />
-                <div className='w-fullflex flex-col'>
-                    <div className='p-2 border-b-2'>
-                        <p><strong><i className='ri-map-pin-user-fill'></i></strong> 123 Main St</p>
-                    </div>
-                    <div className='p-2 border-b-2'>
-                        <p><strong><i className='ri-map-pin-2-fill'></i></strong> 456 Elm St</p>
-                    </div>
-                    <div className='p-2 border-b-2'>
-                        <p><strong><i className='ri-currency-line'></i> </strong>₹196</p>
-                    </div>
+        <div className='max-h-full'>
+        <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={() => {
+            props.setConfirmRidePanel(false)
+        }}><i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
+        <h3 className='text-2xl font-semibold mb-5'>Confirm your Ride</h3>
 
+        <div className='flex gap-2 justify-between flex-col items-center'>
+            <img className='h-20' src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg" alt="" />
+            <div className='w-full mt-5'>
+                <div className='flex items-center gap-5 p-3 border-b-2'>
+                    <i className="ri-map-pin-user-fill"></i>
+                    <div>
+                        <p className='text-sm -mt-1 text-gray-600'>{pickup}</p>
+                    </div>
+                </div>
+                <div className='flex items-center gap-5 p-3 border-b-2'>
+                    <i className="text-lg ri-map-pin-2-fill"></i>
+                    <div>
+                        <p className='text-sm -mt-1 text-gray-600'>{destination}</p>
+                    </div>
+                </div>
+                <div className='flex items-center gap-5 p-3'>
+                    <i className="ri-currency-line"></i>
+                    <div>
+                        <h3 className='text-lg font-medium'>₹{fare[vehicleType]}</h3>
+                        <p className='text-sm -mt-1 text-gray-600'>Cash Cash</p>
+                    </div>
                 </div>
             </div>
-            <div className="flex justify-between">
-                <button
-                    onClick={() => {
-                        props.setlookingForDriver(true);
-                        props.setconfirmRidePanel(false);
-                    }}
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-blue-600">Confirm Ride</button>
-                <button
-                    onClick={() => {
-                        props.setconfirmRidePanel(false);
-                    }}
-                    className="bg-gray-300 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
-            </div>
+            <button onClick={() => {
+                setlookingForDriver(true)
+                setconfirmRidePanel(false)
+                createRide()
+
+            }} className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg'>Confirm</button>
         </div>
+    </div>
     );
 }
 
