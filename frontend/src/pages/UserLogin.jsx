@@ -9,7 +9,7 @@ const UserLogin = () => {
     const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
     const navigate = useNavigate();
-    const [user, setuser] = useContext(userDataContext)
+    const {user, setuser} = useContext(userDataContext)
     const submitHandler = async (e) => {
         e.preventDefault();
         const user = {

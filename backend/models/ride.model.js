@@ -4,12 +4,12 @@ const mongoose = require('mongoose')
 const rideSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
         require: true
     },
     captain: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Captain'
+        ref: 'captain'
     },
     pickup: {
         type: String,

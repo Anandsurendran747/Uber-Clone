@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LocationSearchPanel = ({ setpickupPoint, setdestinationPoint, acitveFeild, pickupSuggessions}) => {
+const LocationSearchPanel = ({ setpickupPoint, setdestinationPoint, acitveFeild, pickupSuggessions }) => {
   function handleClikcEvent(elem) {
     if (acitveFeild == 'pickup') {
       setpickupPoint(elem)

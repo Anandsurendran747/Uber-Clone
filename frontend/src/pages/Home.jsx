@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap';
 import 'remixicon/fonts/remixicon.css'
@@ -8,6 +8,8 @@ import ConfirmRidePanel from '../components/ConfirmRidePanel';
 import LookingForDriver from '../components/LookingForDriver';
 import WaitingForDriver from '../components/WaitingForDriver';
 import axios from 'axios';
+import { userDataContext } from '../context/UserContext';
+import { SocketDataContext } from '../context/SocketContext'
 
 const Home = () => {
     const [pickupPoint, setpickupPoint] = useState(null);
@@ -26,6 +28,18 @@ const Home = () => {
     const [acitveFeild, setactiveFeild] = useState(null);
     const [fare, setfare] = useState({});
     const [vehicleType, setvehicleType] = useState(null);
+    const { user } = useContext(userDataContext);
+    const { socket } = useContext(SocketDataContext)
+
+    useEffect(() => {
+        // console.log(user);
+
+        socket.emit('join', {
+            userType: 'user',
+            userId: user._id
+        })
+    }, []);
+
 
     useGSAP(function () {
         if (expand) {
@@ -125,7 +139,7 @@ const Home = () => {
         setfare(response.data);
 
     }
-    async function createRide(){
+    async function createRide() {
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/ride/create`, {
             source: pickupPoint,
             destination: destinationPoint,
@@ -136,7 +150,7 @@ const Home = () => {
             }
         })
         console.log(response.data);
-        
+
     }
 
     return (
@@ -177,7 +191,7 @@ const Home = () => {
                             value={destinationPoint}
                             placeholder='Destination Point' className='bg-[#eeeeee] p-2 pl-4 rounded w-full text-sm' type="text" />
                         <button
-                        type='submit '
+                            type='submit '
                             className='bg-black text-white p-2 rounded-lg w-full mt-3'>
                             Find Trip
                         </button>
@@ -200,21 +214,24 @@ const Home = () => {
                     fare={fare}
                     setconfirmRidePanel={setconfirmRidePanel}
                     setchooseVehicleOpen={setchooseVehicleOpen}
-                     />
+                />
             </div>
-            <div ref={confirmRidePanelRef} className='fixed z-10 translate-y-full w-full h-screen bottom-0 bg-white p-3 items-center' >
+            <div ref={confirmRidePanelRef} className='fixed z-10 translate-y-full w-full h-[70%]  bottom-0 bg-white p-3 items-center' >
                 <ConfirmRidePanel
                     pickup={pickupPoint}
                     destination={destinationPoint}
-                    fare={fare}
-                    vehicleType={vehicleType}
+                    fare={fare[vehicleType]}
                     setconfirmRidePanel={setconfirmRidePanel}
                     setlookingForDriver={setlookingForDriver}
                     createMyRide={createRide}
-                    />
+                />
             </div>
             <div ref={lookingForDriverRef} className='fixed z-10 translate-y-full w-full bottom-0 bg-white p-3 items-center' >
-                <LookingForDriver />
+                <LookingForDriver
+                    pickup={pickupPoint}
+                    destination={destinationPoint}
+                    fare={fare[vehicleType]}
+                />
             </div>
             <div className='fixed z-10 translate-y-full  w-full bottom-0 bg-white p-3 items-center' >
                 <WaitingForDriver />

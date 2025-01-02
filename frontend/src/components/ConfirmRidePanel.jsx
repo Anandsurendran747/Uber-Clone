@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ConfirmRidePanel = ({vehicleType,createRide, pickup, destination, fare, setlookingForDriver, setconfirmRidePanel }) => {
+const ConfirmRidePanel = ({createMyRide, pickup, destination, fare, setlookingForDriver, setconfirmRidePanel }) => {
     
     return (
         <div className='max-h-full'>
@@ -27,7 +27,7 @@ const ConfirmRidePanel = ({vehicleType,createRide, pickup, destination, fare, se
                 <div className='flex items-center gap-5 p-3'>
                     <i className="ri-currency-line"></i>
                     <div>
-                        <h3 className='text-lg font-medium'>₹{fare[vehicleType]}</h3>
+                        <h3 className='text-lg font-medium'>₹{fare}</h3>
                         <p className='text-sm -mt-1 text-gray-600'>Cash Cash</p>
                     </div>
                 </div>
@@ -35,7 +35,7 @@ const ConfirmRidePanel = ({vehicleType,createRide, pickup, destination, fare, se
             <button onClick={() => {
                 setlookingForDriver(true)
                 setconfirmRidePanel(false)
-                createRide()
+                createMyRide()
 
             }} className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg'>Confirm</button>
         </div>

@@ -6,7 +6,7 @@ import { captainDataContext } from '../context/CaptainContext';
 const CaptainProtectWrapper = ({ children }) => {
     const token = localStorage.getItem('token');
     const [isLoading, setisLoading] = useState(true);
-    const [captain, setCaptain] = useContext(captainDataContext);
+    const { captain, setcaptain } = useContext(captainDataContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const CaptainProtectWrapper = ({ children }) => {
         }
     }).then(response => {
         if (response.status == 200) {
-            setCaptain(response.data.captain)
+            setcaptain(response.data)
             setisLoading(false);
         }
     }).catch(err => {

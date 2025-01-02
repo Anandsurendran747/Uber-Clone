@@ -2,7 +2,7 @@ import React from 'react'
 
 const CaptainDetails = () => {
     return (
-        <div className="bg-white shadow-md rounded-lg p-4 w-full">
+        <div className="bg-white shadow-md h-full rounded-lg p-4 w-full">
             <div className='flex justify-between items-center'>
                 <h1 className="text-xl font-bold text-gray-800 mb-4">Welcome, Captain!</h1>
                 <div>
@@ -26,9 +26,9 @@ const CaptainDetails = () => {
                     <span className="font-bold text-gray-800">4.8</span>
                 </li>
             </ul>
-            <button className="mt-6 w-full bg-yellow-400 text-white py-2 rounded-lg transition duration-300">
+            {/* <button className="mt-6 w-full bg-yellow-400 text-white py-2 rounded-lg transition duration-300">
                 Start New Ride
-            </button>
+            </button> */}
         </div>
     )
 }
